@@ -1,0 +1,11 @@
+{
+    "token": "<DISCORD_BOT_TOKEN>",
+    "prefix": "<PREFIX>",
+    "guildId": "<GUILD_ID",
+    "clientId": "<APPLICATION_ID>",
+    "network": "<CHAIN_NETWORK>",
+    "BUSDcontract": "<CONTRACT_ADDRESS",
+    "tokenContract": "<CONTRACT_ADDRESS>",
+    "tokenAbi": "token.json",
+    "BUSDabi": "genericAbi.json"
+}

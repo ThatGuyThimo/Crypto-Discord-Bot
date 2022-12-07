@@ -1,6 +1,6 @@
 {
   "name": "cryptodiscordbot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "This bot is a discord bot with prefix and slash command support and crypto integration.",
   "main": "main.js",
   "scripts": {
