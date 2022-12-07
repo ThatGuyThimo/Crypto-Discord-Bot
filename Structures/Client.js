@@ -66,9 +66,16 @@ class Client extends Discord.Client {
                  * @type {SlashCommand}
                  */
                 const slashCommand = require(`../SlashCommands/${file}`);
+
                 console.log(`SlashCommand ${slashCommand.name} loaded`);
+
                 this.slashcommands.set(slashCommand.name, slashCommand);
-                slashCommands.push({"name": `${slashCommand.name}`, "description": `${slashCommand.description}`});
+
+                if (slashCommand.options != undefined) {
+                    slashCommands.push({"name": `${slashCommand.name}`, "description": `${slashCommand.description}`, "options": slashCommand.options});
+                } else {
+                    slashCommands.push({"name": `${slashCommand.name}`, "description": `${slashCommand.description}`});
+                }
 
             });
 
@@ -81,8 +88,7 @@ class Client extends Discord.Client {
             console.log('Started refreshing application (/) commands.');
                 
 
-
-            await rest.put(Routes.applicationCommands(config.clientId, config.guildId), { body: slashCommands });
+            await rest.put(Routes.applicationGuildCommands(config.clientId, config.guildId), { body: slashCommands });
         
             console.log('Successfully reloaded application (/) commands.');
             } catch (error) {
@@ -96,7 +102,7 @@ class Client extends Discord.Client {
                 const Scommand = this.slashcommands.find(cmd => cmd.name == interaction.commandName);
 
                 try {
-                    Scommand.run(interaction, 'kaas', this);
+                    Scommand.run(interaction, interaction.options._hoistedOptions, this);
                 } catch {
                     interaction.reply(`Something went wrong while trying to run ${interaction.commandName}`)
                 }

@@ -79,4 +79,29 @@ function playAudio(source, message) {
     }
 }
 
-module.exports = { randomArray, intervalPing, playAudio, parsejson };
+/**
+ * 
+ * @param {number} x 
+ * @returns number with commas
+ */
+ function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/**
+ * 
+ * @param {number} value 
+ * @param {int} rounding 100 for 2 decimals optional
+ * @param {bool} commas bool optional
+ * @returns rounded down number
+ */
+ function roundDown(value, rounding = 100, commas = false) {
+    value = Math.floor(value * rounding) / rounding;
+    if (commas == true) {
+        value = numberWithCommas(value);
+        return value
+    }
+    return value
+}
+
+module.exports = { randomArray, intervalPing, playAudio, parsejson, roundDown};
