@@ -66,7 +66,7 @@ module.exports = new SlashCommand({
 
 
         } else {
-            message.reply(`Invalid walletAddress : ${walletAddress}`);
+            message.reply(`Invalid walletAddress or contractAddress`);
         }
 
     }
