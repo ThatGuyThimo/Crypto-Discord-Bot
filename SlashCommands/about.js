@@ -2,6 +2,8 @@ const SlashCommand = require("../Structures/SlashCommand.js");
 
 const Discord = require("discord.js");
 
+const config = require("../Data/config.json");
+
 module.exports = new SlashCommand({
     name: "about",
     description: "shows info about the bot",
@@ -16,7 +18,7 @@ module.exports = new SlashCommand({
             )
             .setTimestamp(message.createdTimestamp)
             .setDescription(`Information about  ${client.user.username}`)
-            .setColor("GREEN")
+            .setColor(`${config.colorscheme}`)
             .setThumbnail(client.user.avatarURL({ dynamic: true }))
             .addFields(
                 {

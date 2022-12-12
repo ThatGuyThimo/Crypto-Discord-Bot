@@ -23,9 +23,44 @@ const config = require("../Data/config.json")
       const contract = new web3.eth.Contract(abi, contractaddress)
 
       try {
-          return new Promise(resolve => {
+          return new Promise((resolve, reject) => {
               contract.methods.balanceOf(address).call().then(function (result) {
           resolve(web3.utils.fromWei(result, conversion));
+          }).catch(error => {
+            console.error(error)
+            reject("Something went wrong with getting the balance")
+          });
+         });
+      } catch {
+        console.log(`something went wrong with web3`)
+        return "Something went wrong"
+      }
+}
+/**
+ *
+ * @param {string} abi
+ * @param {string} contractaddress
+ * @returns ballance of enterd wallet adress in the requested crypto
+ */
+ function getTokenSymbol(abi, contractaddress) {
+    try {
+        const data = require(`../Data/${abi}`)
+        abi = data
+      } catch (err) {
+        console.error(err);
+      }
+
+      const web3 = new Web3( config.network );
+
+      const contract = new web3.eth.Contract(abi, contractaddress)
+
+      try {
+          return new Promise((resolve, reject) => {
+              contract.methods.symbol().call().then(function (result) {
+          resolve(result);
+          }).catch(error => {
+            console.error(error)
+            reject("Something went wrong with getting the the token symbol")
           });
          });
       } catch {
@@ -65,4 +100,4 @@ const config = require("../Data/config.json")
 //       }
 // }
 
-module.exports = {getTokenBallance};
+module.exports = {getTokenBallance, getTokenSymbol};

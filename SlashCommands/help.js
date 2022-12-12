@@ -17,7 +17,7 @@ module.exports = new SlashCommand({
                 message.user.avatarURL()
             )
             .setDescription(`Information and usage of ${client.user.username}`)
-            .setColor("GREEN")
+            .setColor(`${config.colorscheme}`)
             .setThumbnail(client.user.avatarURL({ dynamic: true }))
             .setTimestamp(message.createdTimestamp)
             .addFields(
