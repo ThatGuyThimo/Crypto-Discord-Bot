@@ -2,7 +2,7 @@ const SlashCommand = require("../Structures/SlashCommand.js");
 
 const {roundDown} = require("../Classes/functions.js")
 
-const {getTokenBallance} = require("../Classes/web3.js")
+const {getTokenBallance, getTokenSymbol} = require("../Classes/web3.js")
 
 const config = require("../Data/config.json");
 
@@ -31,40 +31,51 @@ module.exports = new SlashCommand({
         const embed = new Discord.MessageEmbed();
 
         if (walletReg.test(walletAddress) && walletReg.test(contractAddress)) {
-            const result = roundDown(await getTokenBallance(config.BUSDabi, "ether", walletAddress, contractAddress), 100, false)
-            // message.reply(`result : ${result}`);
+            let symbol = "" 
+            await getTokenSymbol(config.BUSDabi, contractAddress).then(result => {
+                symbol = result
+            }).catch(error =>{
+                console.error(error)
+            })
 
-            embed.setTitle(`Balance`)
-                .setAuthor(
-                    message.user.username,
-                    message.user.avatarURL()
-                )
-                .setDescription(`Balance from contract ${contractAddress}`)
-                .setColor(`${config.colorscheme}`)
-                .setThumbnail(client.user.avatarURL({ dynamic: true }))
-                .setTimestamp(message.createdTimestamp)
-                .addFields(
-                    {
-                        name: `Balance: `,
-                        value: `${result}`,
-                        inline: true
-                    },
-                    {
-                        name: `Made by`,
-                        value: `[@Bongo_dev](https://twitter.com/)`,
-                        inline: true
-                    },
-                    {
-                        name: `Advertisment`,
-                        value: `Your ad here`,
-                        inline: true
-                    },
-                );
+            await getTokenBallance(config.BUSDabi, "ether", walletAddress, contractAddress).then(result => {
 
-            message.reply({ embeds: [embed] });
+                result = roundDown(result, 100, false)
+                // message.reply(`result : ${result}`);
+    
+                embed.setTitle(`Balance`)
+                    .setAuthor(
+                        message.user.username,
+                        message.user.avatarURL()
+                    )
+                    .setDescription(`Balance from contract ${contractAddress}`)
+                    .setColor(`${config.colorscheme}`)
+                    .setThumbnail(client.user.avatarURL({ dynamic: true }))
+                    .setTimestamp(message.createdTimestamp)
+                    .addFields(
+                        {
+                            name: `Balance: `,
+                            value: `${result} ${symbol}`,
+                            inline: true
+                        },
+                        {
+                            name: `Made by`,
+                            value: `[@Bongo_dev](https://twitter.com/)`,
+                            inline: true
+                        },
+                        {
+                            name: `Advertisment`,
+                            value: `Your ad here`,
+                            inline: true
+                        },
+                    );
+    
+                message.reply({ embeds: [embed] });
 
-
-
+            }).catch(error => {
+              message.reply(`Error : ${error}`);  
+            })
+            
         } else {
             message.reply(`Invalid walletAddress or contractAddress`);
         }
