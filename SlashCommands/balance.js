@@ -51,7 +51,7 @@ module.exports = new SlashCommand({
                     },
                     {
                         name: `Made by`,
-                        value: `@Bongo_dev`,
+                        value: `[@Bongo_dev](https://twitter.com/)`,
                         inline: true
                     },
                     {
